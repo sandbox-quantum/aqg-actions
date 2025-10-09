@@ -1,0 +1,41 @@
+name: 'SandboxAQ Cybersecurity AI-SPM Inventory Scan'
+description: 'Scans the repository contents for AI usage and reports findings back to SandboxAQ AQtive Guard'
+author: "SandboxAQSB Technology Inc."
+branding:
+  icon: "alert-triangle"
+  color: "yellow"
+inputs:
+  aqg_instance:
+    description: 'URL of your AQtive Guard instance'
+    required: true
+runs:
+  using: "composite"
+  steps:
+      - run: echo "Job triggered by ${{ github.event_name }}, running on ${{ github.repository }} @ ${{ github.ref }}"
+        shell: bash
+      - name: Check out repository code
+        uses: actions/checkout@v5
+      # Get the image as a tar. TODO: Use a secret and move it behind AQG auth
+      - name: Download Docker image
+        run: curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-action-test:3:aispm-action-test.tar:download?alt=media"
+        shell: bash
+      # Load image into the local docker cache
+      - name: Load Docker image
+        run: docker load --input image.tar
+        shell: bash
+      # Tag the image, so it doesn't try and pull it from the web (and then we reference the tag subsequently)
+      - name: Tag image
+        run: docker tag europe-west1-docker.pkg.dev/pqc-ml-vertexai/aispm-public/aispm-action-test:latest aispm-action-test:latest
+        shell: bash
+      # The usual way would be doing this via "uses: docker://image:tag" but that doesn't work with local images
+      # since GH Actions tries to pull them from the web. So we run it manually here.
+      - name: Run AISPM scanner container
+        run: docker run --workdir /github/workspace --rm -e "HOME" -e GITHUB_WORKSPACE="/github/workspace" -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v $GITHUB_WORKSPACE:"/github/workspace" aispm-action-test:latest
+        shell: bash
+      - name: Upload BOM file
+        uses: actions/upload-artifact@v4
+        with:
+          name: bom.jsom
+          path: ${{ github.workspace }}/bom.json
+
+
