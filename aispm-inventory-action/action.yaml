@@ -1,15 +1,15 @@
-name: 'SandboxAQ Cybersecurity AI-SPM Inventory Scan'
-description: 'Scans the repository contents for AI usage and reports findings back to SandboxAQ AQtive Guard'
-author: "SandboxAQSB Technology Inc."
+name: SandboxAQ AQtive Guard AI SPM Inventory Scan
+description: Scans the repository contents for AI usage and reports findings back to SandboxAQ AQtive Guard
+author: SB Technology Inc.
 branding:
-  icon: "alert-triangle"
-  color: "yellow"
+  icon: alert-triangle
+  color: yellow
 inputs:
   aqg_instance:
-    description: 'URL of your AQtive Guard instance'
+    description: URL of your AQtive Guard instance
     required: true
 runs:
-  using: "composite"
+  using: composite
   steps:
       - run: echo "Job triggered by ${{ github.event_name }}, running on ${{ github.repository }} @ ${{ github.ref }}"
         shell: bash
@@ -29,7 +29,7 @@ runs:
         shell: bash
       # The usual way would be doing this via "uses: docker://image:tag" but that doesn't work with local images
       # since GH Actions tries to pull them from the web. So we run it manually here.
-      - name: Run AISPM scanner container
+      - name: Run AI SPM scanner container
         run: docker run --workdir /github/workspace --rm -e "HOME" -e GITHUB_WORKSPACE="/github/workspace" -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v $GITHUB_WORKSPACE:"/github/workspace" aispm-action-test:latest
         shell: bash
       - name: Upload BOM file

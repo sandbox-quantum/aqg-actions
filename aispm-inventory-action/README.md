@@ -8,14 +8,15 @@ with additional information and analyzed for issues. You can inspect the results
 You can use the Action as follows:
 
 ```yaml
-name: Example workflow for Python using SandboxAQ Cybersecurity AI-SPM
+name: Example workflow for Python using SandboxAQ AQtive Guard AI SPM
 on: push
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Run AI-SPM Inventory
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Run AI SPM Inventory
         uses: sandbox-quantum/actions/aispm-inventory-action@master
         with:
           aqg_instance: https://some_url
