@@ -1,14 +1,14 @@
-# SandboxAQ GitHub Actions
+# SandboxAQ AQtive Guard GitHub Actions
 
 A set of [GitHub Actions](https://github.com/features/actions) for using [SandboxAQ AQtive Guard](https://www.aqtiveguard.com/) to scan your your GitHub projects. 
 
 ## Supported Actions
 - [AI SPM Inventory](aispm-inventory-action): Finds AI assets (models, agents, MCP servers, ...) in your code and adds them to your AQtive Guard inventory
 
-Here's an example of using one of the Actions, in this case to test a Node.js project:
+Here's an example of using one of the Actions, in this case to scan a repository for AI assets:
 
 ```yaml
-name: Example workflow for Python using SandboxAQ AQtive Guard AI SPM
+name: Example workflow using SandboxAQ AQtive Guard AI SPM
 on: push
 jobs:
   security:

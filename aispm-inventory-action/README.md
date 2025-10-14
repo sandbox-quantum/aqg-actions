@@ -1,7 +1,7 @@
-# SandboxAQ Cybersecurity AI-SPM Inventory Scan
+# SandboxAQ AQtive Guard AI SPM Inventory Scan
 
 A [GitHub Action](https://github.com/features/actions) for using [SandboxAQ](https://www.sandboxaq.com/) AQtive Guard
-AI-SPM functionality. This action scans your code using static analysis to detect AI assets (such as models, agents, MCP servers, ...).
+AI SPM functionality. This action scans your code using static analysis to detect AI assets (such as models, agents, MCP servers, ...).
 Once the inventory is created, it'll be sent to your AQtive Guard instance, where it'll be enriched
 with additional information and analyzed for issues. You can inspect the results in your AQtive Guard web interface.
 
