@@ -17,7 +17,7 @@ runs:
         uses: actions/checkout@v5
       # Get the image as a tar. TODO: Use a secret and move it behind AQG auth
       - name: Download Docker image
-        run: curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-action-test:3:aispm-action-test.tar:download?alt=media"
+        run: curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-action-test-yak:5:tarball.tar:download?alt=media"
         shell: bash
       # Load image into the local docker cache
       - name: Load Docker image
@@ -25,17 +25,15 @@ runs:
         shell: bash
       # Tag the image, so it doesn't try and pull it from the web (and then we reference the tag subsequently)
       - name: Tag image
-        run: docker tag europe-west1-docker.pkg.dev/pqc-ml-vertexai/aispm-public/aispm-action-test:latest aispm-action-test:latest
+        run: docker tag bazel/saq/pqc/aispm_inventory:latest aispm-action-test:latest
         shell: bash
       # The usual way would be doing this via "uses: docker://image:tag" but that doesn't work with local images
       # since GH Actions tries to pull them from the web. So we run it manually here.
       - name: Run AI SPM scanner container
-        run: docker run --workdir /github/workspace --rm -e "HOME" -e GITHUB_WORKSPACE="/github/workspace" -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v $GITHUB_WORKSPACE:"/github/workspace" aispm-action-test:latest
+        run: docker run --rm -e "HOME" -e GITHUB_WORKSPACE="/github/workspace" -e GITHUB_WORKFLOW -e GITHUB_ACTION -e GITHUB_ACTOR -e GITHUB_EVENT_NAME -e GITHUB_REPOSITORY -e GITHUB_REF -e GITHUB_SHA -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v $GITHUB_WORKSPACE:"/github/workspace" aispm-action-test:latest
         shell: bash
       - name: Upload BOM file
         uses: actions/upload-artifact@v4
         with:
           name: bom.jsom
           path: ${{ github.workspace }}/bom.json
-
-
