@@ -16,21 +16,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
-      - name: Run AI SPM Inventory
-        uses: sandbox-quantum/actions/aispm-inventory-action@master
+      - name: Run AI-SPM Inventory detection
+        uses: sandbox-quantum/aqg-actions/aispm-inventory-action@master
         with:
           aqg_instance: https://some_url
-        env:
-          AQG_TOKEN: ${{ secrets.AQG_TOKEN }}
+          aqg_client_id: ${{ secrets.AQG_CLIENT_ID }}
+          aqg_client_secret: ${{ secrets.AQG_CLIENT_SECRET }}
 ```
 
 ## Properties
 
-This Action has properties which are passed to the underlying image, either as an explicit input variable (passed using `with`)
-or as an environment variable (using `env`).
+This Action has properties which are passed to the underlying image, passed as an explicit input variable (using `with`).
+We recommend [using secrets](https://docs.github.com/en/enterprise-cloud@latest/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
+for `aqg_client_id` and `aqg_client_secret`.
 
-| Property     | Default | Description                                                                                         |
-| ------------ | ------- | --------------------------------------------------------------------------------------------------- |
-| aqg_instance |         | URL of your AQtive Guard instance (input variable)                                                  |
-| AQG_TOKEN    |         | Authentication token to connect to AQtive Guard (environment variable)                              |
+| Property          | Required | Description                                                                           |
+| ----------------- | -------- | ------------------------------------------------------------------------------------- |
+| aqg_instance      | yes      | URL of your AQtive Guard instance                                                     |
+| aqg_client_id     | yes      | Client ID for authentication                                                          |
+| aqg_client_secret | yes      | Authentication token to connect to AQtive Guard                                       |
 
