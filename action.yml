@@ -36,7 +36,7 @@ runs:
       - name: Download Docker image
         env: 
           AQG_INSTANCE: ${{ inputs.aqg_instance }}
-        run: 'curl -s -L --output image.tar $AQG_INSTANCE/api/v4/downloads/sensors/aispm_inventory_scanner/1.0.0 -H "Authorization: Bearer $AQG_TOKEN"'
+        run: 'curl -s -L --output image.tar $AQG_INSTANCE/downloads/sensors/aispm_inventory_scanner/1.0.0 -H "Authorization: Bearer $AQG_TOKEN"'
         shell: bash
 
       # Load image into the local docker cache
