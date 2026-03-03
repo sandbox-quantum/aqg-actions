@@ -25,7 +25,7 @@ runs:
         shell: bash
         run: |
           echo "Job triggered by ${{ github.event_name }}, running on ${{ github.repository }} @ ${{ github.ref }}"
-          'curl -X GET --output image.tar https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-scanner-github:1.0.0:aispm_inventory_scanner-1.0.0.tar.gz:download?alt=media'
+          'curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-scanner-github:1.0.0:aispm_inventory_scanner-1.0.0.tar.gz:download?alt=media"'
           # Load image into the local docker cache
           docker load --input image.tar
           # Tag the image, so it doesn't try and pull it from the web (and then we reference the tag subsequently)
