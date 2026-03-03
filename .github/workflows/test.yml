@@ -1,0 +1,14 @@
+name: Test Action
+on: workflow_dispatch
+
+jobs:
+  test-local:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # The "./" tells GitHub to look for action.yml in the root of THIS repo
+      - name: Run My Action
+        uses: ./ 
+        with:
+          target_path: './'
