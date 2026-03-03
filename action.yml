@@ -25,7 +25,7 @@ runs:
         shell: bash
         run: |
           echo "Job triggered by ${{ github.event_name }}, running on ${{ github.repository }} @ ${{ github.ref }}"
-          'curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-scanner-github:1.0.0:aispm_inventory_scanner-1.0.0.tar.gz:download?alt=media"'
+          curl -X GET --output image.tar "https://artifactregistry.googleapis.com/download/v1/projects/pqc-ml-vertexai/locations/europe-west1/repositories/aispm-public-generic/files/aispm-scanner-github:1.0.0:aispm_inventory_scanner-1.0.0.tar.gz:download?alt=media"
           # Load image into the local docker cache
           docker load --input image.tar
           # Tag the image, so it doesn't try and pull it from the web (and then we reference the tag subsequently)
@@ -48,9 +48,9 @@ runs:
           echo "Job triggered by ${{ github.event_name }}, running on ${{ github.repository }} @ ${{ github.ref }}"
           # Use client ID and secret to obtain an AQG token from the instance.
           # Store the token received in the AQG_TOKEN environment variable.          
-          'echo AQG_TOKEN=$(curl -s -L -X POST $AQG_INSTANCE/authv2/realms/aqtiveguard/protocol/openid-connect/token -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials" -d "client_id=$AQG_CLIENT_ID" -d "client_secret=$AQG_CLIENT_SECRET" | jq -r ".access_token") >> "$GITHUB_ENV"'
+          echo AQG_TOKEN=$(curl -s -L -X POST $AQG_INSTANCE/authv2/realms/aqtiveguard/protocol/openid-connect/token -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=client_credentials" -d "client_id=$AQG_CLIENT_ID" -d "client_secret=$AQG_CLIENT_SECRET" | jq -r ".access_token") >> "$GITHUB_ENV"
           # Get the image as a tar. Authenticate using AQG_TOKEN.
-          'curl -s -L --output image.tar $AQG_INSTANCE/downloads/sensors/aispm_inventory_scanner/1.0.0 -H "Authorization: Bearer $AQG_TOKEN"'
+          curl -s -L --output image.tar $AQG_INSTANCE/downloads/sensors/aispm_inventory_scanner/1.0.0 -H "Authorization: Bearer $AQG_TOKEN"
           # Load image into the local docker cache
           docker load --input image.tar
           # Tag the image, so it doesn't try and pull it from the web (and then we reference the tag subsequently)
